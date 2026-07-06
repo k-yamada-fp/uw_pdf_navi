@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>引受目安PDFナビ</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div>
+          <h1>引受目安PDFナビ</h1>
+          <p>病名・項目名から、各社資料の原典ページへ。</p>
+        </div>
+        <div class="header-tags" aria-label="サイトの性質">
+          <span>個人利用</span>
+          <span>原典案内ツール</span>
+          <span>資料ページ確認</span>
+        </div>
+      </header>
+
+      <main class="app-layout">
+        <aside class="source-panel" aria-label="ソース">
+          <section class="panel-heading">
+            <p class="eyebrow">ソース</p>
+            <h2>検索対象の資料を選択してください。</h2>
+          </section>
+
+          <div class="source-actions">
+            <button id="select-all" type="button">すべて選択</button>
+            <button id="clear-all" type="button">すべて解除</button>
+          </div>
+
+          <div id="source-list" class="source-list" aria-live="polite"></div>
+          <p id="selected-count" class="selected-count">選択中：0 / 0件</p>
+
+          <div class="hint-card">
+            <strong>ヒント</strong>
+            <p>検索はチェックした資料のみが対象です。必要に応じてCSVとPDFを更新してください。</p>
+          </div>
+        </aside>
+
+        <section class="search-panel" aria-label="検索">
+          <div class="search-header">
+            <p class="eyebrow">索引検索</p>
+            <h2>各保険会社の引受目安</h2>
+            <p>チェックした資料の索引から検索し、原典ページへご案内します。</p>
+          </div>
+
+          <form id="search-form" class="search-form" autocomplete="off">
+            <label for="search-input">病名・項目名</label>
+            <div class="search-row">
+              <input id="search-input" type="search" placeholder="病名・項目名を入力" value="胃潰瘍">
+              <button type="submit">検索</button>
+            </div>
+            <p class="search-scope">チェックした資料のみ検索</p>
+          </form>
+
+          <div class="result-summary" id="result-summary">検索語を入力して検索してください。</div>
+          <div id="result-list" class="result-list" aria-live="polite"></div>
+
+          <div class="notice-card">
+            このツールは保険会社資料の原典ページへ案内するためのものです。実際の確認は必ず原典PDFで行ってください。
+          </div>
+        </section>
+
+        <aside class="pdf-panel" aria-label="PDFプレビュー">
+          <section class="pdf-header">
+            <p class="eyebrow">PDFプレビュー</p>
+            <h2>原典ページ</h2>
+            <p id="pdf-title">検索結果から原典ページを開いてください。</p>
+            <p id="pdf-pages" class="pdf-pages"></p>
+          </section>
+
+          <div class="pdf-toolbar">
+            <button id="prev-page" type="button" disabled>前のページ</button>
+            <span id="page-status">- / -</span>
+            <button id="next-page" type="button" disabled>次のページ</button>
+            <button id="open-pdf" type="button" disabled>別タブでPDFを開く</button>
+          </div>
+
+          <div class="pdf-hint">
+            前後ページも確認できます。該当の前後に条件や注記が記載されている場合があります。
+          </div>
+
+          <div id="pdf-message" class="pdf-message">PDF未選択です。</div>
+          <div class="pdf-canvas-wrap">
+            <canvas id="pdf-canvas"></canvas>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
