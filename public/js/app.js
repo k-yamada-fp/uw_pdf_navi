@@ -1,13 +1,10 @@
 import { loadCsv } from './csv.js';
-import { onPdfPageChange, openPdf } from './pdf-viewer.js';
 
 const state = {
   documents: [],
   tocEntries: [],
   selectedIds: new Set(),
-  results: [],
-  activeResultKey: '',
-  activeEntry: null
+  results: []
 };
 
 const sourceList = document.getElementById('source-list');
@@ -18,8 +15,6 @@ const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 const resultSummary = document.getElementById('result-summary');
 const resultList = document.getElementById('result-list');
-const pdfTitle = document.getElementById('pdf-title');
-const pdfPages = document.getElementById('pdf-pages');
 
 function toNumber(value, fallback = 0) {
   const number = Number(value);
@@ -86,8 +81,6 @@ function renderSources() {
 
 function clearResults(message) {
   state.results = [];
-  state.activeResultKey = '';
-  state.activeEntry = null;
   resultSummary.textContent = message;
   resultList.textContent = '';
 }
@@ -132,12 +125,8 @@ function renderResults() {
   state.results.forEach((entry, index) => {
     const doc = getDoc(entry.document_id);
     if (!doc) return;
-    const key = `${entry.document_id}:${entry.sort_order}:${entry.item_name}`;
     const card = document.createElement('article');
     card.className = 'result-card';
-    if (state.activeResultKey === key) {
-      card.classList.add('is-active');
-    }
 
     const top = document.createElement('div');
     top.className = 'result-top';
@@ -162,24 +151,17 @@ function renderResults() {
       resultField('PDFページ', `p.${entry.pdf_page_number}`)
     );
 
-    const openButton = document.createElement('button');
-    openButton.type = 'button';
-    openButton.className = 'open-page';
-    openButton.textContent = 'このページを開く';
-    openButton.addEventListener('click', (event) => {
-      event.stopPropagation();
-      openResult(entry, key);
-    });
+    const actions = document.createElement('div');
+    actions.className = 'result-actions';
+    const pdfPage = Math.max(1, toNumber(entry.pdf_page_number, 1));
+    actions.append(
+      pdfLink(doc.pdf_file, pdfPage, `PDF p.${pdfPage}を開く`, true),
+      pdfLink(doc.pdf_file, Math.max(1, pdfPage - 1), `前ページ p.${Math.max(1, pdfPage - 1)}`),
+      pdfLink(doc.pdf_file, pdfPage + 1, `次ページ p.${pdfPage + 1}`)
+    );
 
-    card.addEventListener('click', () => {
-      openResult(entry, key);
-    });
-    card.append(top, grid, openButton);
+    card.append(top, grid, actions);
     resultList.appendChild(card);
-
-    if (index === 0 && !state.activeResultKey) {
-      state.activeResultKey = key;
-    }
   });
 }
 
@@ -195,18 +177,14 @@ function resultField(label, value) {
   return wrapper;
 }
 
-function openResult(entry, key) {
-  const doc = getDoc(entry.document_id);
-  if (!doc) return;
-  state.activeResultKey = key;
-  state.activeEntry = entry;
-  pdfTitle.textContent = `${doc.company_name}｜${doc.document_name}｜${doc.version_label}`;
-  pdfPages.textContent = `資料p.${entry.document_page_number} / PDF p.${entry.pdf_page_number}`;
-  renderResults();
-  openPdf({
-    url: pdfPath(doc.pdf_file),
-    pageNumber: toNumber(entry.pdf_page_number, 1)
-  });
+function pdfLink(pdfFile, pageNumber, label, isPrimary = false) {
+  const link = document.createElement('a');
+  link.className = isPrimary ? 'pdf-page-link is-primary' : 'pdf-page-link';
+  link.href = `${pdfPath(pdfFile)}#page=${pageNumber}`;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.textContent = label;
+  return link;
 }
 
 async function init() {
@@ -244,12 +222,6 @@ clearAllButton.addEventListener('click', () => {
 searchForm.addEventListener('submit', (event) => {
   event.preventDefault();
   runSearch();
-});
-
-onPdfPageChange(({ currentPage }) => {
-  if (state.activeEntry) {
-    pdfPages.textContent = `資料p.${state.activeEntry.document_page_number} / PDF p.${currentPage}`;
-  }
 });
 
 init();

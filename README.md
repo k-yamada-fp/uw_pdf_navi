@@ -14,7 +14,6 @@ public/
   css/style.css
   js/app.js
   js/csv.js
-  js/pdf-viewer.js
   data/documents.csv
   data/toc_entries.csv
   pdfs/orix_2025_12.pdf
@@ -61,7 +60,7 @@ orix_2025_12,胃潰瘍,イカイヨウ,76,76,傷病名索引,,8
 - `item_name`: 検索対象となる項目名
 - `kana`: 将来用・表示補助用。検索対象ではありません。
 - `document_page_number`: 資料に印字されたページ番号
-- `pdf_page_number`: PDF.jsで開くページ番号
+- `pdf_page_number`: 別タブでPDFを開くページ番号
 - `source_type`: 傷病名索引、検査項目索引などの表示用
 - `memo`: 任意メモ。検索対象ではありません。
 - `sort_order`: 表示順
@@ -92,7 +91,7 @@ page_offset = 4
 pdf_page_number = document_page_number + page_offset
 ```
 
-ただし、この静的サイトでは `toc_entries.csv` に最終的な `pdf_page_number` を持たせます。検索・PDF表示では `toc_entries.csv` の `pdf_page_number` を使います。
+ただし、この静的サイトでは `toc_entries.csv` に最終的な `pdf_page_number` を持たせます。検索結果のPDFリンクでは `toc_entries.csv` の `pdf_page_number` を使います。
 
 ## ローカル確認
 
