@@ -122,7 +122,7 @@ function renderResults() {
     return;
   }
 
-  state.results.forEach((entry, index) => {
+  state.results.forEach((entry) => {
     const doc = getDoc(entry.document_id);
     if (!doc) return;
     const card = document.createElement('article');
@@ -194,6 +194,7 @@ async function init() {
     state.documents = documents
       .filter((doc) => doc.enabled === '1')
       .sort(sortByOrder);
+
     const tocEntryGroups = await Promise.all(
       state.documents.map(async (doc) => {
         try {
@@ -204,7 +205,9 @@ async function init() {
         }
       })
     );
+
     const validDocumentIds = new Set(state.documents.map((doc) => doc.document_id));
+
     state.tocEntries = tocEntryGroups
       .flat()
       .filter((entry) => validDocumentIds.has(entry.document_id))
@@ -213,10 +216,13 @@ async function init() {
         if (docCompare !== 0) return docCompare;
         return sortByOrder(left, right);
       });
+
     state.selectedIds = new Set(state.documents.map((doc) => doc.document_id));
+
     renderSources();
     runSearch();
   } catch (error) {
+    console.error(error);
     resultSummary.textContent = 'CSVを読み込めませんでした。public/data/ 配下のCSVを確認してください。';
     resultList.textContent = '';
   }
