@@ -15,7 +15,8 @@ public/
   js/app.js
   js/csv.js
   data/documents.csv
-  data/toc_entries.csv
+  data/toc_entries/
+    orix_2025_12.csv
   pdfs/orix_2025_12.pdf
   vendor/pdfjs/
 README.md
@@ -28,9 +29,11 @@ Netlifyでは publish directory を `public` にしてください。GitHubにpu
 1. PDFファイルを `public/pdfs/` に置きます。
 2. `public/data/documents.csv` に資料行を追加します。
 3. `pdf_file` には `public/pdfs/` 配下のPDFファイル名を正確に書きます。
-4. `enabled` を `1` にすると画面左のソース一覧に表示されます。
+4. `public/data/toc_entries/{document_id}.csv` に索引CSVを置きます。
+5. `enabled` を `1` にすると画面左のソース一覧に表示され、その `document_id` の索引CSVが読み込まれます。
 
 PDFファイル名と `documents.csv` の `pdf_file` は完全に一致させてください。
+`documents.csv` の `document_id` と、索引CSVファイル名 `{document_id}.csv` も一致させてください。
 
 ## documents.csv
 
@@ -49,12 +52,20 @@ orix_2025_12,オリックス生命,引受目安,2025年12月版,orix_2025_12.pdf
 - `enabled`: `1`なら表示、`0`なら非表示
 - `sort_order`: 表示順
 
-## toc_entries.csv
+## toc_entries/{document_id}.csv
 
 ```csv
 document_id,item_name,kana,document_page_number,pdf_page_number,source_type,memo,sort_order
 orix_2025_12,胃潰瘍,イカイヨウ,76,76,傷病名索引,,8
 ```
+
+索引CSVは `public/data/toc_entries/` 配下に資料ごとに分割して置きます。
+
+```text
+public/data/toc_entries/orix_2025_12.csv
+```
+
+ブラウザは `documents.csv` のうち `enabled=1` の資料を読み込み、各 `document_id` に対応する `data/toc_entries/{document_id}.csv` を初回にすべて取得して結合します。
 
 - `document_id`: `documents.csv` の `document_id`
 - `item_name`: 検索対象となる項目名
@@ -67,7 +78,7 @@ orix_2025_12,胃潰瘍,イカイヨウ,76,76,傷病名索引,,8
 
 ## 検索仕様
 
-検索対象は `toc_entries.csv` の `item_name` のみです。
+検索対象は各 `toc_entries/{document_id}.csv` の `item_name` のみです。
 
 検索対象にしないもの:
 
@@ -91,7 +102,7 @@ page_offset = 4
 pdf_page_number = document_page_number + page_offset
 ```
 
-ただし、この静的サイトでは `toc_entries.csv` に最終的な `pdf_page_number` を持たせます。検索結果のPDFリンクでは `toc_entries.csv` の `pdf_page_number` を使います。
+ただし、この静的サイトでは各 `toc_entries/{document_id}.csv` に最終的な `pdf_page_number` を持たせます。検索結果のPDFリンクでは分割索引CSVの `pdf_page_number` を使います。
 
 ## ローカル確認
 
