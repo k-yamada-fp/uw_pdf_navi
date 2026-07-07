@@ -195,7 +195,14 @@ async function init() {
       .filter((doc) => doc.enabled === '1')
       .sort(sortByOrder);
     const tocEntryGroups = await Promise.all(
-      state.documents.map((doc) => loadCsv(`data/toc_entries/${encodeURIComponent(doc.document_id)}.csv`))
+      state.documents.map(async (doc) => {
+        try {
+          return await loadCsv(`data/toc_entries/${encodeURIComponent(doc.document_id)}.csv`);
+        } catch (error) {
+          console.warn(`索引CSVを読み込めませんでした: ${doc.document_id}`, error);
+          return [];
+        }
+      })
     );
     const validDocumentIds = new Set(state.documents.map((doc) => doc.document_id));
     state.tocEntries = tocEntryGroups
