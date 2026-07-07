@@ -1,6 +1,0 @@
-document_id,company_name,document_name,version_label,pdf_file,document_page1_pdf_page,page_offset,enabled,sort_order
-metlife_2026_07,メットライフ生命,引受目安,2026年7月版,metlife_2026_07.pdf,1,0,1,1
-hanasaku_2026_05,はなさく生命,引受目安,2026年5月版,hanasaku_2026_05.pdf,1,0,1,2
-daiichi_neo_2026_04,第一ネオ生命,引受目安,2026年4月版,daiichi_neo_2026_04.pdf,1,0,1,3
-medicare_2025_12,メディケア生命,引受目安,2025年12月版,medicare_2025_12.pdf,1,0,1,4
-orix_2025_12,オリックス生命,引受目安,2025年12月版,orix_2025_12.pdf,1,0,1,5
