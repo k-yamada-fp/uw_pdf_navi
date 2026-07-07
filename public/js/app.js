@@ -189,15 +189,23 @@ function pdfLink(pdfFile, pageNumber, label, isPrimary = false) {
 
 async function init() {
   try {
-    const [documents, tocEntries] = await Promise.all([
-      loadCsv('data/documents.csv'),
-      loadCsv('data/toc_entries.csv')
-    ]);
+    const documents = await loadCsv('data/documents.csv');
 
     state.documents = documents
       .filter((doc) => doc.enabled === '1')
       .sort(sortByOrder);
-    state.tocEntries = tocEntries.sort(sortByOrder);
+    const tocEntryGroups = await Promise.all(
+      state.documents.map((doc) => loadCsv(`data/toc_entries/${encodeURIComponent(doc.document_id)}.csv`))
+    );
+    const validDocumentIds = new Set(state.documents.map((doc) => doc.document_id));
+    state.tocEntries = tocEntryGroups
+      .flat()
+      .filter((entry) => validDocumentIds.has(entry.document_id))
+      .sort((left, right) => {
+        const docCompare = sortByOrder(getDoc(left.document_id) || {}, getDoc(right.document_id) || {});
+        if (docCompare !== 0) return docCompare;
+        return sortByOrder(left, right);
+      });
     state.selectedIds = new Set(state.documents.map((doc) => doc.document_id));
     renderSources();
     runSearch();
