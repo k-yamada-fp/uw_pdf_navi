@@ -24,6 +24,19 @@ README.md
 
 Netlifyでは publish directory を `public` にしてください。GitHubにpushすればNetlifyに反映される運用を想定しています。
 
+## 簡易入口
+
+トップ画面には、本格認証ではない簡易パスワード入口を置いています。
+
+仮パスワードは `public/js/app.js` の次の定数で変更できます。
+
+```js
+const SIMPLE_ACCESS_PASSWORD = 'CHANGE_ME_PASSWORD';
+```
+
+認証済み状態は `sessionStorage` に保存されます。ブラウザを閉じると再入力が必要です。
+PDFやCSVの直URLアクセス、開発者ツール、GitHub上のソース確認を防ぐものではありません。
+
 ## PDFを追加する方法
 
 1. PDFファイルを `public/pdfs/` に置きます。
@@ -66,6 +79,7 @@ public/data/toc_entries/orix_2025_12.csv
 ```
 
 ブラウザは `documents.csv` のうち `enabled=1` の資料を読み込み、各 `document_id` に対応する `data/toc_entries/{document_id}.csv` を初回にすべて取得して結合します。
+未作成の索引CSVがあっても、その資料の索引だけ空配列として扱い、サイト全体は停止しません。
 
 - `document_id`: `documents.csv` の `document_id`
 - `item_name`: 検索対象となる項目名
@@ -79,6 +93,7 @@ public/data/toc_entries/orix_2025_12.csv
 ## 検索仕様
 
 検索対象は各 `toc_entries/{document_id}.csv` の `item_name` のみです。
+検索結果は保険会社ごとの見出しで区切って表示します。
 
 検索対象にしないもの:
 
