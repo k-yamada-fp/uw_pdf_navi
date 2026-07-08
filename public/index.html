@@ -7,7 +7,19 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <div class="site-shell">
+    <section id="access-gate" class="access-gate" aria-label="簡易入口">
+      <form id="access-form" class="access-card" autocomplete="off">
+        <p class="eyebrow">Access</p>
+        <h1>引受目安PDFナビ</h1>
+        <p>関係者用の簡易入口です</p>
+        <label for="access-password">パスワード</label>
+        <input id="access-password" type="password" autocomplete="current-password">
+        <button type="submit">入る</button>
+        <div id="access-error" class="access-error" role="alert" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <div id="app-shell" class="site-shell" hidden>
       <header class="site-header">
         <div>
           <h1>引受目安PDFナビ</h1>
