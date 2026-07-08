@@ -49,6 +49,83 @@ button:disabled {
   opacity: 0.55;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+.access-gate {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+}
+
+.access-card {
+  width: min(440px, 100%);
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow);
+}
+
+.access-card h1 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 0;
+}
+
+.access-card p:not(.eyebrow) {
+  margin: 8px 0 22px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.access-card label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.access-card input {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.access-card input:focus {
+  outline: 3px solid #bfdbfe;
+  border-color: var(--blue);
+}
+
+.access-card button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 14px;
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.access-card button:hover {
+  background: var(--blue-dark);
+  color: #ffffff;
+}
+
+.access-error {
+  min-height: 22px;
+  margin-top: 12px;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .site-shell {
   min-height: 100vh;
   display: grid;
@@ -317,6 +394,41 @@ button:disabled {
 .result-list {
   display: grid;
   gap: 12px;
+}
+
+.company-result-heading {
+  margin-top: 8px;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-top: 4px solid #64748b;
+  border-radius: 12px;
+  background: #eef2f7;
+}
+
+.company-result-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.company-result-heading h3 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+.company-result-title span {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.company-result-heading p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .result-card {
